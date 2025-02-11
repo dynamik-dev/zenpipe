@@ -5,31 +5,12 @@ on:
     types: [created]
 
 jobs:
-  wait-for-ci:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Wait for CI to succeed
-      uses: lewagon/wait-on-check-action@v1.3.1
-      with:
-        ref: ${{ github.event.release.tag_name }}
-        check-name: 'build-and-test'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
-    - name: Wait for lint to succeed
-      uses: lewagon/wait-on-check-action@v1.3.1
-      with:
-        ref: ${{ github.event.release.tag_name }}
-        check-name: 'lint'
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        wait-interval: 10
-
   publish:
-    needs: wait-for-ci
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Use Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
